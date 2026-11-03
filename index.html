@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="sky">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snapshot | Modern Image Gallery &amp; Dashboard</title>
+  
+  <!-- Inter Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Immediate Theme Initializer to prevent flash -->
+  <script>
+    (function() {
+      try {
+        const savedTheme = localStorage.getItem('snapshot_theme') || localStorage.getItem('lumora_theme') || 'sky';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <!-- =========================================================
+       NAVBAR (Snapshot Branding & Modern Logo)
+       ========================================================= -->
+  <header class="navbar">
+    <a href="#home" class="logo" onclick="window.snapshotApp && window.snapshotApp.switchView('gallery')">
+      <div class="logo-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+          <circle cx="12" cy="13" r="3.2"/>
+          <circle cx="18" cy="10" r="0.8" fill="currentColor"/>
+        </svg>
+      </div>
+      <span>Snapshot</span>
+    </a>
+    
+    <nav>
+      <a href="#home" class="nav-link active" data-view="gallery">Home</a>
+      <a href="#gallery" class="nav-link" data-view="gallery">Gallery</a>
+      <a href="#dashboard" class="nav-link" data-view="dashboard">Dashboard</a>
+      <a href="#albums" class="nav-link" data-view="albums">Albums</a>
+      <a href="#favorites" class="nav-link" data-view="favorites">
+        Favorites <span class="nav-badge" id="nav-fav-badge">0</span>
+      </a>
+    </nav>
+
+    <!-- Theme Switcher & Upload Button -->
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div class="theme-switcher" title="Switch Theme (Keyboard: T)">
+        <button class="theme-btn active" data-theme="sky" title="Light Sky - Fresh Sky-Blue">
+          <span class="theme-dot dot-sky"></span>
+          <span>Sky</span>
+        </button>
+        <button class="theme-btn" data-theme="light" title="Light - Minimal & Clean">
+          <span class="theme-dot dot-light"></span>
+          <span>Light</span>
+        </button>
+        <button class="theme-btn" data-theme="dark" title="Dark - Obsidian & Vibrant">
+          <span class="theme-dot dot-dark"></span>
+          <span>Dark</span>
+        </button>
+        <button class="theme-btn" data-theme="peach" title="Peach - Light Warm Pastel">
+          <span class="theme-dot dot-peach"></span>
+          <span>Peach</span>
+        </button>
+        <button class="theme-btn" data-theme="lavender" title="Lavender - Light Soft Purple">
+          <span class="theme-dot dot-lavender"></span>
+          <span>Lavender</span>
+        </button>
+      </div>
+
+      <button class="btn-upload-nav" id="btn-open-upload">
+        + Upload
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- =========================================================
+         HERO SECTION
+         ========================================================= -->
+    <section class="hero" id="home">
+      <div class="hero-text">
+        <p class="eyebrow">DISCOVER &middot; CAPTURE &middot; FEEL</p>
+        <h1>Moments Beyond <span>Ordinary</span></h1>
+        <p>Explore beautiful photographs of Landscape, Lifestyle and Banaras, all in one place.</p>
+        <a href="#gallery" class="explore-btn" onclick="window.snapshotApp && window.snapshotApp.switchView('gallery')">
+          Explore Gallery &rarr;
+        </a>
+      </div>
+
+      <!-- Hero Statistics Widget -->
+      <div class="hero-stats">
+        <div>
+          <strong id="hero-stat-photos">12</strong>
+          <span>Photographs</span>
+        </div>
+        <div>
+          <strong id="hero-stat-categories">03</strong>
+          <span>Categories</span>
+        </div>
+        <div>
+          <strong>&infin;</strong>
+          <span>Inspiration</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         VIEW 1: GALLERY VIEW (Landscape, Lifestyle, Banaras)
+         ========================================================= -->
+    <section class="gallery-section" id="gallery-view">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">YOUR VISUAL JOURNEY</p>
+          <h2 id="gallery-main-heading">Explore the Gallery</h2>
+        </div>
+        
+        <div class="gallery-search-wrap">
+          <svg class="search-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input type="search" id="searchInput" placeholder="Search photos, tags, Banaras..." autocomplete="off">
+        </div>
+      </div>
+
+      <!-- Category Filter Pills and Controls Row -->
+      <div class="filter-controls-row">
+        <div class="filters" id="categoryFilters">
+          <button class="filter active" data-category="all">All <span class="filter-badge" id="badge-all">12</span></button>
+          <button class="filter" data-category="landscape">Landscape <span class="filter-badge" id="badge-landscape">4</span></button>
+          <button class="filter" data-category="lifestyle">Lifestyle <span class="filter-badge" id="badge-lifestyle">3</span></button>
+          <button class="filter" data-category="banaras">Banaras <span class="filter-badge" id="badge-banaras">5</span></button>
+        </div>
+
+        <div class="extra-controls">
+          <select class="sort-select" id="sortSelect">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="title-asc">Title (A &rarr; Z)</option>
+            <option value="title-desc">Title (Z &rarr; A)</option>
+            <option value="likes">Most Liked &hearts;</option>
+          </select>
+
+          <div class="layout-group">
+            <button class="layout-toggle-btn active" data-layout="grid" title="Grid Layout">&#9638;</button>
+            <button class="layout-toggle-btn" data-layout="masonry" title="Masonry Layout">&#9776;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-gallery-state" id="emptyState">
+        <h3>No photos found</h3>
+        <p>Try searching for a different keyword or resetting your filters.</p>
+        <button class="btn-secondary" style="margin-top: 15px;" onclick="window.snapshotApp && window.snapshotApp.resetFilters()">Reset Filters</button>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         VIEW 2: DASHBOARD VIEW
+         ========================================================= -->
+    <section class="dashboard-metrics-section" id="dashboard-view" style="display: none;">
+      <h2 class="dashboard-hero-title">Dashboard Overview</h2>
+      <p class="dashboard-hero-desc">Live statistics, recent uploads, and interactive tag explore.</p>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div>
+            <div class="metric-value" id="dash-total-photos">12</div>
+            <div class="metric-label">Total Photographs</div>
+          </div>
+          <div class="metric-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+              <circle cx="12" cy="13" r="3"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div>
+            <div class="metric-value" id="dash-total-categories">3</div>
+            <div class="metric-label">Active Albums</div>
+          </div>
+          <div class="metric-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div>
+            <div class="metric-value" id="dash-total-favs">0</div>
+            <div class="metric-label">Saved Favorites</div>
+          </div>
+          <div class="metric-icon-wrap" style="color: var(--heart-color); background: var(--heart-bg-liked);">&hearts;</div>
+        </div>
+
+        <div class="metric-card">
+          <div>
+            <div class="metric-value" id="dash-total-views">31,450</div>
+            <div class="metric-label">Total Views</div>
+          </div>
+          <div class="metric-icon-wrap">&#128065;</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 35px;">
+        <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 14px;">Popular Tags</h3>
+        <div class="filters" id="dashboardTagsCloud">
+          <!-- Tag pills dynamically loaded -->
+        </div>
+      </div>
+
+      <div>
+        <h3 style="font-size: 20px; font-weight: 800; margin-bottom: 14px;">Recent Uploads</h3>
+        <div class="gallery-grid" id="dashboardRecentGrid">
+          <!-- Recent uploads -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         VIEW 3: ALBUMS VIEW
+         ========================================================= -->
+    <section class="gallery-section" id="albums-view" style="display: none;">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">COLLECTIONS</p>
+          <h2>Photo Albums</h2>
+        </div>
+        <button class="btn-upload-nav" id="btn-create-album">
+          + New Album
+        </button>
+      </div>
+
+      <div class="albums-grid" id="albumsGrid">
+        <!-- Rendered dynamically: Landscape, Lifestyle, Banaras -->
+      </div>
+    </section>
+
+    <!-- =========================================================
+         VIEW 4: FAVORITES VIEW
+         ========================================================= -->
+    <section class="gallery-section" id="favorites-view" style="display: none;">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">SAVED SHOTS</p>
+          <h2>Your Favorites</h2>
+        </div>
+      </div>
+
+      <div class="gallery-grid" id="favoritesGrid">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="empty-gallery-state" id="favoritesEmptyState">
+        <h3>No favorites saved yet</h3>
+        <p>Click the &hearts; heart icon on any photo card to save your favorite inspirations here.</p>
+        <button class="btn-primary" style="margin-top: 15px;" onclick="window.snapshotApp && window.snapshotApp.switchView('gallery')">
+          Browse Gallery
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================
+       LIGHTBOX FULL-SCREEN MODAL
+       ========================================================= -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-progress" id="lbProgress"></div>
+    
+    <!-- Top Tools: Zoom, Slideshow, Fullscreen, Download -->
+    <div class="lightbox-top-tools">
+      <button class="lb-tool-btn" id="lbZoomIn" title="Zoom In (+)">+</button>
+      <button class="lb-tool-btn" id="lbZoomOut" title="Zoom Out (-)">-</button>
+      <button class="lb-tool-btn" id="lbSlideshow" title="Play Slideshow">&#9658;</button>
+      <button class="lb-tool-btn" id="lbFullscreen" title="Fullscreen">&#x26F6;</button>
+      <button class="lb-tool-btn" id="lbDownload" title="Download Image">&#128190;</button>
+    </div>
+
+    <button class="close-btn" id="closeBtn" aria-label="Close image">&times;</button>
+    <button class="nav-btn" id="prevBtn" aria-label="Previous image">&#10094;</button>
+    <img id="lightboxImg" src="" alt="">
+    <button class="nav-btn" id="nextBtn" aria-label="Next image">&#10095;</button>
+    <p id="lightboxCaption"></p>
+  </div>
+
+  <!-- =========================================================
+       UPLOAD MODAL
+       ========================================================= -->
+  <div class="modal-overlay" id="uploadModal">
+    <div class="modal-card">
+      <div class="modal-header-row">
+        <h3>Upload Photo to Snapshot</h3>
+        <button class="modal-close-x" id="uploadCloseBtn">&times;</button>
+      </div>
+
+      <form id="uploadForm">
+        <div class="upload-dropzone" id="uploadDropzone">
+          <div class="dropzone-icon">&#128247;</div>
+          <div class="dropzone-text">Drag &amp; drop your image here or browse</div>
+          <div class="dropzone-sub">Supports JPG, PNG, WEBP, AVIF, GIF (Single or multiple)</div>
+          <input type="file" id="fileInput" accept="image/*" multiple style="display: none;">
+        </div>
+
+        <div id="uploadPreviewWrap" style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;"></div>
+
+        <div class="form-field">
+          <label>Or Paste Online Image URL</label>
+          <input type="url" id="uploadUrlInput" placeholder="https://images.unsplash.com/photo-...">
+        </div>
+
+        <div class="form-field">
+          <label>Photo Title</label>
+          <input type="text" id="uploadTitleInput" placeholder="e.g. Sunrise over Ganges" required>
+        </div>
+
+        <div class="form-field">
+          <label>Section / Album</label>
+          <select id="uploadCategorySelect">
+            <option value="landscape">Landscape</option>
+            <option value="lifestyle">Lifestyle</option>
+            <option value="banaras">Banaras</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Tags (comma separated)</label>
+          <input type="text" id="uploadTagsInput" placeholder="banaras, ghats, dawn">
+        </div>
+
+        <div class="modal-buttons-row">
+          <button type="button" class="btn-secondary" id="uploadCancelBtn">Cancel</button>
+          <button type="submit" class="btn-primary">Add to Snapshot</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       NEW ALBUM MODAL
+       ========================================================= -->
+  <div class="modal-overlay" id="newAlbumModal">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header-row">
+        <h3>Create New Album</h3>
+        <button class="modal-close-x" id="newAlbumCloseBtn">&times;</button>
+      </div>
+
+      <form id="newAlbumForm">
+        <div class="form-field">
+          <label>Album Name</label>
+          <input type="text" id="newAlbumNameInput" placeholder="e.g. Street Moments" required>
+        </div>
+
+        <div class="form-field">
+          <label>Description</label>
+          <textarea id="newAlbumDescInput" rows="3" placeholder="Brief description of this collection..."></textarea>
+        </div>
+
+        <div class="form-field">
+          <label>Accent Color</label>
+          <input type="color" id="newAlbumColorInput" value="#64C9EA" style="height: 42px; cursor: pointer;">
+        </div>
+
+        <div class="modal-buttons-row">
+          <button type="button" class="btn-secondary" id="newAlbumCancelBtn">Cancel</button>
+          <button type="submit" class="btn-primary">Create Album</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       TOAST CONTAINER
+       ========================================================= -->
+  <div class="toast-box" id="toastBox"></div>
+
+  <!-- =========================================================
+       FOOTER (Snapshot Branding)
+       ========================================================= -->
+  <footer>
+    <p>&ldquo;Every moment is a story waiting to be captured.&rdquo; &mdash; Snapshot</p>
+    <p>Made with &hearts; for photography lovers</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/sample-data.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
